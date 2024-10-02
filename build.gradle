@@ -1,0 +1,48 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.10'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'Pothole'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	//JUnit 5는 단위 테스트를 작성하고 실행하기 위한 기본적인 프레임워크이며, Mockito는 복잡한 객체 의존성을 관리하고, 테스트의 독립성을 높여주는 도구입니다.
+	// JUnit 5
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0' // JUnit 5 API
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0' // JUnit 5 Engine
+
+	// Mockito Mockito는 Java 객체를 "mock"하여, 실제 객체 없이 테스트할 수 있도록 해주는 라이브러리입니다. 이는 특히 의존성(Dependency)을 가진 클래스의 테스트에 유용합니다.
+	testImplementation 'org.mockito:mockito-core'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

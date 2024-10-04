@@ -1,8 +1,10 @@
 package Pothole.websocket.config;
 
 import Pothole.websocket.exception.WebSocketHandler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
@@ -24,9 +26,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         .withSockJS();
     }
 
-    @Override // 클라이언트가 특정 주제 topic에만 관련된메시지만받을수있음
+    @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic"); // Simple Broker 활성화
-        registry.setApplicationDestinationPrefixes("/app"); // 클라이언트가 보내는 메시지의 prefix
+        registry.enableSimpleBroker("/topic")
+                .setHeartbeatValue(new long[]{10000, 10000})
+                .setTaskScheduler(heartBeatScheduler()); // TaskScheduler 설정
+        registry.setApplicationDestinationPrefixes("/app");
+    }
+
+    @Bean
+    public ThreadPoolTaskScheduler heartBeatScheduler() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(1);
+        scheduler.setThreadNamePrefix("wss-heartbeat-thread-");
+        return scheduler;
     }
 }

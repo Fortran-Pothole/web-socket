@@ -1,14 +1,22 @@
 package Pothole.websocket.config;
 
+import Pothole.websocket.exception.WebSocketHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
 @EnableWebSocketMessageBroker //메시지 플로우를 모으기 위해 컴포넌트 구성
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+    private final WebSocketHandler webSocketHandler;
+
+    public WebSocketConfig(WebSocketHandler webSocketHandler) {
+        this.webSocketHandler = webSocketHandler;
+    }
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/socket")
@@ -21,6 +29,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/topic"); // Simple Broker 활성화
         registry.setApplicationDestinationPrefixes("/app"); // 클라이언트가 보내는 메시지의 prefix
     }
-
-
 }

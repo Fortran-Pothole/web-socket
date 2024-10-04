@@ -20,7 +20,7 @@ public class WebSocketController {
         messagingTemplate.convertAndSend("/topic/km-h", message); // 받은 메시지를 클라이언트로 전송
     }
 
-    @SubscribeMapping("/topic/gyroData")
+    @SubscribeMapping("/topic/km-h")
     public void receiveGyroData(String message) {
         System.out.println("Received from ActiveMQ: " + message);
         // 원하는 추가 처리 수행

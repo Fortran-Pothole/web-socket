@@ -21,4 +21,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/topic"); // Simple Broker 활성화
         registry.setApplicationDestinationPrefixes("/app"); // 클라이언트가 보내는 메시지의 prefix
     }
+
+
 }

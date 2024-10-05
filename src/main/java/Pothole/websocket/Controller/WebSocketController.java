@@ -26,7 +26,7 @@ public class WebSocketController {
 //        return message; // 메시지를 다시 주제로 전송
 //    }
 
-    @JmsListener(destination = "/sendKmH") // 클라이언트가 /app/sendKmH로 메시지를 보내면 해당 메서드가 호출됨.
+    @JmsListener(destination = "/app/sendKmH") // 클라이언트가 /app/sendKmH로 메시지를 보내면 해당 메서드가 호출됨.
     public void sendGyroData(String message) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         VelocityData data = objectMapper.readValue(message, VelocityData.class);

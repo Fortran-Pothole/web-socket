@@ -1,6 +1,5 @@
 package Pothole.websocket.Controller;
 
-import Pothole.websocket.entity.VelocityData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.jms.annotation.JmsListener;
@@ -30,10 +29,14 @@ public class MessageConsumer {
                 message = decodedMessage.toString();
             }
 
-            VelocityData data = objectMapper.readValue(message, VelocityData.class);
-            System.out.println("JMS Received message: " + data);
-        } catch (JsonProcessingException e) {
-            System.out.println("JMS JSON 파싱 오류: " + e.getMessage());
+            // 숫자 값을 파싱
+            int velocity = Integer.parseInt(message);
+            System.out.println("JMS Received velocity: " + velocity);
+
+            // 클라이언트에 숫자만 전송
+            messagingTemplate.convertAndSend("/topic/velocity", velocity);
+        } catch (Exception e) {
+            System.out.println("JMS 처리 오류: " + e.getMessage());
             System.out.println("JMS Received raw message: " + message);
         }
     }

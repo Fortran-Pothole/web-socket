@@ -1,6 +1,5 @@
 package Pothole.websocket.Controller;
 
-import Pothole.websocket.entity.VelocityData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.messaging.handler.annotation.MessageMapping;

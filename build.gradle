@@ -41,6 +41,9 @@ dependencies {
 
 	// Mockito Mockito는 Java 객체를 "mock"하여, 실제 객체 없이 테스트할 수 있도록 해주는 라이브러리입니다. 이는 특히 의존성(Dependency)을 가진 클래스의 테스트에 유용합니다.
 	testImplementation 'org.mockito:mockito-core'
+
+	implementation 'org.springframework.boot:spring-boot-starter-activemq'
+	implementation 'javax.jms:javax.jms-api:2.0.1'
 }
 
 tasks.named('test') {

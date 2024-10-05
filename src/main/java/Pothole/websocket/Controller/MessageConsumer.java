@@ -20,6 +20,18 @@ public class MessageConsumer {
     @JmsListener(destination = "/app/sendKmH")
     public void receiveMessage(String message) {
         try {
+            // 메시지가 ASCII 값으로 수신되었는지 확인 후 디코딩
+            if (message.matches("\\d+(,\\d+)*")) {
+                // ASCII 코드를 문자열로 변환
+                String[] asciiValues = message.split(",");
+                StringBuilder decodedMessage = new StringBuilder();
+                for (String asciiValue : asciiValues) {
+                    int code = Integer.parseInt(asciiValue);
+                    decodedMessage.append((char) code);
+                }
+                message = decodedMessage.toString();
+            }
+
             // JSON 형식으로 메시지를 파싱하여 velocity 값 추출
             VelocityData data = objectMapper.readValue(message, VelocityData.class);
             int velocity = data.getVelocity();

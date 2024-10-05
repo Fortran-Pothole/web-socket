@@ -16,13 +16,15 @@ public class MessageConsumer {
     }
 
     @JmsListener(destination = "/app/sendKmH")
-    public void receiveMessage(String message) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        VelocityData data = objectMapper.readValue(message, VelocityData.class);
-        System.out.println("Jms Received velocity: " + data.getVelocity());
-        //System.out.println("Received message from client: " + message); // 받은 값을 출력
-        messagingTemplate.convertAndSend("/topic/km-h", data.getVelocity()); // 받은 메시지를 클라이언트로 전송
-        System.out.println("Jms Received message: " + message);
-        // 메시지를 처리하는 로직 추가
+    public void receiveMessage(String message) {
+        try {
+            // 메시지를 JSON으로 파싱
+            ObjectMapper objectMapper = new ObjectMapper();
+            VelocityData data = objectMapper.readValue(message, VelocityData.class);
+            System.out.println("JMS Received message: " + data);
+        } catch (JsonProcessingException e) {
+            System.err.println("JMS JSON 파싱 오류: " + e.getMessage());
+            System.out.println("JMS Received raw message: " + message);
+        }
     }
 }

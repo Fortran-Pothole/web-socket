@@ -38,7 +38,7 @@ public class MessageConsumer {
             System.out.println("JMS Received velocity: " + velocity);
 
             // 클라이언트에 숫자만 전송
-            messagingTemplate.convertAndSend("/topic/velocity", velocity);
+            messagingTemplate.convertAndSend("/topic/km-h", String.valueOf(velocity));
         } catch (JsonProcessingException e) {
             System.out.println("JMS JSON 파싱 오류: " + e.getMessage());
             System.out.println("JMS Received raw message: " + message);

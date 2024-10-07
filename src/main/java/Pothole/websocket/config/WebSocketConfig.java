@@ -29,9 +29,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic")
-                .setHeartbeatValue(new long[]{10000, 10000})
-                .setTaskScheduler(heartBeatScheduler()); // TaskScheduler 설정
+        registry.enableStompBrokerRelay("/topic", "/queue")
+                .setRelayHost("localhost")  // ActiveMQ broker host
+                .setRelayPort(61613)        // STOMP port for ActiveMQ
+                .setClientLogin("admin")    // ActiveMQ login (if needed)
+                .setClientPasscode("admin"); // ActiveMQ password (if needed)
+
         registry.setApplicationDestinationPrefixes("/app");
     }
 

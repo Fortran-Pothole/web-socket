@@ -17,7 +17,7 @@ public class MessageConsumer {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    //@JmsListener(destination = "/app/sendKmH")
+    @JmsListener(destination = "/app/sendKmH")
     public void receiveMessage(String message) {
         try {
             // 메시지가 ASCII 값으로 수신되었는지 확인 후 디코딩

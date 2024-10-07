@@ -16,13 +16,13 @@ public class WebSocketController {
         this.messagingTemplate = messagingTemplate;
     }
 
-//    @MessageMapping("/sendKmH")
-//    @SendTo("/topic/km-h")
-//    public String processMessageFromClient(String message) {
-//        System.out.println("processMessageFromClient 메서드 호출됨");
-//        System.out.println("Received message from client: " + message);
-//        return message; // 메시지를 다시 주제로 전송
-//    }
+    @MessageMapping("/sendKmH")
+    @SendTo("/topic/km-h")
+    public String processMessageFromClient(String message) {
+        System.out.println("processMessageFromClient 메서드 호출됨");
+        System.out.println("Received message from client: " + message);
+        return message; // 메시지를 다시 주제로 전송
+    }
 
 //    @MessageMapping("/sendKmH") // 클라이언트가 /app/sendKmH로 메시지를 보내면 해당 메서드가 호출됨.
 //    public void sendGyroData(String message) throws JsonProcessingException {

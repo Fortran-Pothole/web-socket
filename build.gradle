@@ -45,8 +45,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-activemq'
 	implementation 'javax.jms:javax.jms-api:2.0.1'
 
+<<<<<<< HEAD
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+=======
+	implementation 'io.projectreactor.netty:reactor-netty:1.1.6'
+>>>>>>> 91cb8585ad17b9a0d94dc89b5ae411e9a473df4f
 
 }
 

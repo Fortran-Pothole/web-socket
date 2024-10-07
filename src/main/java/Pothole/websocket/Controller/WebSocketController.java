@@ -16,7 +16,7 @@ public class WebSocketController {
         this.messagingTemplate = messagingTemplate;
     }
 
-    @MessageMapping("/sendKmH")
+    @MessageMapping("/app/sendKmH")
     @SendTo("/topic/km-h")
     public String processMessageFromClient(String message) {
         System.out.println("processMessageFromClient 메서드 호출됨");

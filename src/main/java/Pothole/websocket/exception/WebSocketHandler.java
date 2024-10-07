@@ -1,16 +1,19 @@
 package Pothole.websocket.exception;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @Component
 public class WebSocketHandler extends TextWebSocketHandler {
 
-    // 연결된 세션을 저장하는 리스트
-    private final List<WebSocketSession> sessions = new ArrayList<>();
+    private final Set<WebSocketSession> sessions = new HashSet<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -21,26 +24,24 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         System.out.println("Received message: " + message.getPayload());
-
         try {
-            // 받은 메시지를 정수로 변환
             int velocity = Integer.parseInt(message.getPayload().trim());
             String responseMessage = String.valueOf(velocity);
 
-            // 다른 클라이언트에게 속도 데이터를 전송
-            for (WebSocketSession wsSession : sessions) {
-                if (wsSession.isOpen() && !wsSession.getId().equals(session.getId())) {
-                    wsSession.sendMessage(new TextMessage(responseMessage));
-                    System.out.println("Sent response message to session " + wsSession.getId() + ": " + responseMessage);
+            // 모든 연결된 클라이언트에게 메시지를 전송
+            for (WebSocketSession s : sessions) {
+                if (s.isOpen() && s != session) {  // 현재 보낸 세션을 제외하고 전송
+                    s.sendMessage(new TextMessage(responseMessage));
                 }
             }
+            System.out.println("Broadcasted velocity: " + responseMessage);
         } catch (NumberFormatException e) {
             System.out.println("Invalid message format: " + message.getPayload());
         }
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         sessions.remove(session);
         System.out.println("Connection closed: " + session.getId());
     }
